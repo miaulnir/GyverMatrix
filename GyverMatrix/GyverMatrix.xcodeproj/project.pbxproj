@@ -7,17 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C6E02B8293F574D00799E91 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6E02B7293F574D00799E91 /* InfoViewController.swift */; };
+		8C6E02BA293F578A00799E91 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6E02B9293F578A00799E91 /* Constants.swift */; };
+		8C6E02BC293F58DB00799E91 /* commands_info.csv in Resources */ = {isa = PBXBuildFile; fileRef = 8C6E02BB293F58DB00799E91 /* commands_info.csv */; };
 		D5A82BEB293B850900905C49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A82BEA293B850900905C49 /* AppDelegate.swift */; };
-		D5A82BEF293B850900905C49 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A82BEE293B850900905C49 /* ViewController.swift */; };
+		D5A82BEF293B850900905C49 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A82BEE293B850900905C49 /* FirstViewController.swift */; };
 		D5A82BF5293B850900905C49 /* GyverMatrix.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D5A82BF3293B850900905C49 /* GyverMatrix.xcdatamodeld */; };
 		D5A82BF7293B850E00905C49 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5A82BF6293B850E00905C49 /* Assets.xcassets */; };
 		D5A82BFA293B850E00905C49 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5A82BF8293B850E00905C49 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8C6E02B7293F574D00799E91 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		8C6E02B9293F578A00799E91 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		8C6E02BB293F58DB00799E91 /* commands_info.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = commands_info.csv; sourceTree = "<group>"; };
 		D5A82BE7293B850900905C49 /* GyverMatrix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GyverMatrix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5A82BEA293B850900905C49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D5A82BEE293B850900905C49 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D5A82BEE293B850900905C49 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		D5A82BF4293B850900905C49 /* GyverMatrix.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GyverMatrix.xcdatamodel; sourceTree = "<group>"; };
 		D5A82BF6293B850E00905C49 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5A82BF9293B850E00905C49 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -55,7 +61,10 @@
 			isa = PBXGroup;
 			children = (
 				D5A82BEA293B850900905C49 /* AppDelegate.swift */,
-				D5A82BEE293B850900905C49 /* ViewController.swift */,
+				D5A82BEE293B850900905C49 /* FirstViewController.swift */,
+				8C6E02B7293F574D00799E91 /* InfoViewController.swift */,
+				8C6E02B9293F578A00799E91 /* Constants.swift */,
+				8C6E02BB293F58DB00799E91 /* commands_info.csv */,
 				D5A82BF6293B850E00905C49 /* Assets.xcassets */,
 				D5A82BF8293B850E00905C49 /* LaunchScreen.storyboard */,
 				D5A82BFB293B850E00905C49 /* Info.plist */,
@@ -123,6 +132,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5A82BFA293B850E00905C49 /* LaunchScreen.storyboard in Resources */,
+				8C6E02BC293F58DB00799E91 /* commands_info.csv in Resources */,
 				D5A82BF7293B850E00905C49 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -134,8 +144,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5A82BEF293B850900905C49 /* ViewController.swift in Sources */,
+				8C6E02BA293F578A00799E91 /* Constants.swift in Sources */,
+				D5A82BEF293B850900905C49 /* FirstViewController.swift in Sources */,
 				D5A82BEB293B850900905C49 /* AppDelegate.swift in Sources */,
+				8C6E02B8293F574D00799E91 /* InfoViewController.swift in Sources */,
 				D5A82BF5293B850900905C49 /* GyverMatrix.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

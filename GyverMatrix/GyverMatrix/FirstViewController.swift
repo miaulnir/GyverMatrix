@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  FirstViewController.swift
 //  GyverMatrix
 //
 //  Created by Андрей Рыбалкин on 03.12.2022.
@@ -10,8 +10,8 @@ import Network
 
 class FirstViewController: UIViewController {
     
-    var host: NWEndpoint.Host = "192.168.4.1"
-    var port: NWEndpoint.Port = 2390
+    var _host: NWEndpoint.Host = "192.168.4.1"
+    var _port: NWEndpoint.Port = 2390
 
     var connection: NWConnection?
 
@@ -20,16 +20,19 @@ class FirstViewController: UIViewController {
         
         ipTextField.delegate = self
         portTextField.delegate = self
+        requestTextField.delegate = self
         
         view.backgroundColor = .lightGray
         // Do any additional setup after loading the view.
         
         view.addSubview(stackView)
+        view.addSubview(responseLabel)
     }
     
     private lazy var ipTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "IP adress"
+        tf.text = "192.168.4.1"
         tf.borderStyle = .line
         tf.layer.borderWidth = 1
         tf.layer.borderColor = UIColor.black.cgColor
@@ -39,6 +42,16 @@ class FirstViewController: UIViewController {
     private lazy var portTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Port"
+        tf.text = "2390"
+        tf.borderStyle = .line
+        tf.layer.borderWidth = 1
+        tf.layer.borderColor = UIColor.black.cgColor
+        return tf
+    }()
+    
+    private lazy var requestTextField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "Request"
         tf.borderStyle = .line
         tf.layer.borderWidth = 1
         tf.layer.borderColor = UIColor.black.cgColor
@@ -50,7 +63,7 @@ class FirstViewController: UIViewController {
         button.backgroundColor = .systemBlue
         button.setTitle("Connect", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.addTarget(self, action: #selector(connect), for: .touchUpInside)
+        button.addTarget(self, action: #selector(setConnect), for: .touchUpInside)
         return button
     }()
     
@@ -62,7 +75,22 @@ class FirstViewController: UIViewController {
         button.addTarget(self, action: #selector(sendToEsp), for: .touchUpInside)
         return button
     }()
+    
+    private lazy var showInfoButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .systemBlue
+        button.setTitle("Show info", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.addTarget(self, action: #selector(showInfo), for: .touchUpInside)
+        return button
+    }()
 
+    private lazy var responseLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 0, y: stackView.frame.maxY, width: self.view.frame.width, height: 100))
+        label.textAlignment = .center
+        label.text = "response"
+        return label
+    }()
 
     private lazy var stackView: UIStackView = {
         let stack = UIStackView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width - 50, height: 300))
@@ -72,16 +100,33 @@ class FirstViewController: UIViewController {
         stack.distribution = .fillEqually
         stack.addArrangedSubview(ipTextField)
         stack.addArrangedSubview(portTextField)
+        stack.addArrangedSubview(requestTextField)
+        
         stack.addArrangedSubview(connectButton)
         stack.addArrangedSubview(sendButton)
+        stack.addArrangedSubview(showInfoButton)
 
        return stack
     }()
     
-    @objc func sendToEsp() {
-        sendUDP("$8 1 10 1;")
+    @objc func setConnect() {
+        guard
+            let host = self.ipTextField.text,
+            let port = self.portTextField.text
+        else { return }
         
+        self.connect(host: host, port: port)
     }
+    
+    @objc func sendToEsp() {
+        sendUDP(self.requestTextField.text ?? "")
+    }
+    
+    @objc func showInfo() {
+        let infoVC = InfoViewController()
+        present(infoVC, animated: true)
+    }
+    
     func send(_ payload: Data) {
         connection!.send(content: payload, completion: .contentProcessed({ sendError in
             if let error = sendError {
@@ -98,6 +143,9 @@ class FirstViewController: UIViewController {
     
     
     func sendUDP(_ content: String) {
+        
+        guard !content.isEmpty else { return }
+        
         let contentToSendUDP = content.data(using: String.Encoding.utf8)
         self.connection?.send(content: contentToSendUDP, completion: NWConnection.SendCompletion.contentProcessed(({ (NWError) in
             if (NWError == nil) {
@@ -107,11 +155,16 @@ class FirstViewController: UIViewController {
             }
         })))
     }
-    @objc func connect() {
-//        connection = NWConnection(host: host, port: port, using: .udp)
-        connection = NWConnection(host: host, port: port, using: .udp)
+    func connect(host: String, port: String) {
 
-        connection!.stateUpdateHandler = { (newState) in
+        guard let port = NWEndpoint.Port(port) else { return }
+        let host = NWEndpoint.Host(host)
+
+        self.connection = NWConnection(host: host, port: port, using: .udp)
+        
+        guard let connection else { return }
+
+        connection.stateUpdateHandler = { (newState) in
             switch (newState) {
             case .preparing:
                 NSLog("Entered state: preparing")
@@ -130,15 +183,22 @@ class FirstViewController: UIViewController {
             }
         }
         
-        connection!.viabilityUpdateHandler = { (isViable) in
+        connection.viabilityUpdateHandler = { (isViable) in
             if (isViable) {
                 NSLog("Connection is viable")
+                DispatchQueue.main.async {
+                    self.connectButton.backgroundColor = .green
+                }
+                
             } else {
                 NSLog("Connection is not viable")
+                DispatchQueue.main.async {
+                    self.connectButton.backgroundColor = .red
+                }
             }
         }
         
-        connection!.betterPathUpdateHandler = { (betterPathAvailable) in
+        connection.betterPathUpdateHandler = { (betterPathAvailable) in
             if (betterPathAvailable) {
                 NSLog("A better path is availble")
             } else {
@@ -146,7 +206,7 @@ class FirstViewController: UIViewController {
             }
         }
         
-        connection!.start(queue: .global())
+        connection.start(queue: .global())
     }
 
 
